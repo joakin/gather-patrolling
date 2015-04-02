@@ -1,0 +1,22 @@
+{
+  "name": "gather-patrolling",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "beefy lib/index.js:bundle.js --open --index=public/index.html --live",
+    "build": "browserify lib/index.js > public/bundle.js",
+    "deploy": "npm run build && gh-pages public/"
+  },
+  "dependencies": {
+    "browser-jsonp": "^1.0.8",
+    "browserify": "*",
+    "babelify": "*",
+    "beefy": "*"
+  },
+  "browserify": {
+    "transform": ["babelify"]
+  },
+  "author": "Joaquin Oltra <joaquin@chimeces.com> (http://chimeces.com)",
+  "license": "MIT"
+}
