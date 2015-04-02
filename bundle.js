@@ -30,6 +30,7 @@ function get(host, continues, next) {
       action: "query",
       format: "json",
       list: "lists",
+      lstlimit: 20,
       lstmode: "allpublic",
       lstprop: ["label", "description", "public", "image", "count", "updated", "owner"].join("|"),
       continues: continues
@@ -44,10 +45,10 @@ function bringResults() {
     if (err) window.alert(JSON.stringify(err, null, 2));
     var lastRes = lastResults() || [];
     var results = res.query.lists.reverse();
-    if (lastRes && lastRes.length) results = getNewResults(res.query.lists);
+    if (lastRes && lastRes.length) results = getNewResults(res.query.lists);else lastCheck(Date.now());
     if (results.length) {
-      events.emit("results", results);
       lastResults(lastRes.concat(results));
+      events.emit("results", results);
     }
     setTimeout(bringResults, INTERVAL);
   });
@@ -86,11 +87,11 @@ exports.lastResults = lastResults;
 
 var fetch = require("./fetch");
 
-document.body.innerHTML = "<table id=\"t\"></table>";
+document.body.innerHTML = "<table><tbody id=\"t\"></tbody></table>";
 var t = document.getElementById("t");
 
 var ress = fetch.lastResults();
-if (ress) t.innerHTML = ress.reverse().map(row).join("<br/>");
+if (ress) t.innerHTML = ress.reverse().map(row).join("");
 
 fetch().on("results", function (results) {
   console.log(results);
